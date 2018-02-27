@@ -11,9 +11,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "async": "^2.1.4",
+    "async": "^2.6.0",
     "body-parser": "^1.15.2",
-    "express": "^4.14.0",
-    "mongoose": "^4.7.0"
+    "chance": "^1.0.13",
+    "csvjson": "^5.0.0",
+    "express": "^4.16.2",
+    "mongoose": "^4.13.11"
   }
 }
