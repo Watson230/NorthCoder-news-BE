@@ -23,8 +23,10 @@ let articles = function () {
   return new Promise((resolve, reject) => {
 
     resolve(articleData.map(article => {
-      article.belongs_to = article.topic,
+        article.belongs_to = article.topic,
         article.created_by = chance.pickone(userData.map(user => { return user.username }))
+        article.created_at = chance.date()
+        article.votes= Math.floor(Math.random() * 30) + 1 
 
       return new models.Articles(article)
 

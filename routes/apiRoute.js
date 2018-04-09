@@ -6,7 +6,7 @@ const articlesCtrl =require('../controllers/articlesCtrl')
 const usersCtrl = require('../controllers/usersCtrl')
 
 
-
+console.log('api router')
 
 router.get('', );
 
@@ -20,7 +20,16 @@ router.get('/articles',articlesCtrl.fetchArticles )
 
 router.get('/articles/:id/comments',articlesCtrl.fetchArticleComments )
 
+router.get('/users', usersCtrl.fetchAllUsers)
+
 router.get('/users/:id', usersCtrl.fetchUser)
+
+router.get('/users/:id/articles', articlesCtrl.fetchUserArticles)
+
+router.get('/users/:id/comments', usersCtrl.fetchUserComments)
+
+
+
 
 
 module.exports = {router}

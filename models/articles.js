@@ -22,6 +22,11 @@ const ArticleSchema = new Schema({
   created_by: {
     type: String,
     lowercase: true
+  },
+
+  created_at:{
+    type: String,
+    default: new Date().getTime()
   }
 });
 

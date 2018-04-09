@@ -4,7 +4,7 @@ const articleModels =  require(`../models/articles`)
 
 
 function fetchTopicsAPI (req,res){
-
+console.log('fetching topics')
 
 return topicModels.find({})
 

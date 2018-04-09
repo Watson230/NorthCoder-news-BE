@@ -33,6 +33,24 @@ function fetchArticleComments(req, res) {
 
 }
 
+function fetchUserArticles (req,res){
+
+    let user = req.params.id
 
 
-module.exports = { fetchArticles, fetchArticleComments }
+   articleModel.find({'created_by':`${user}`})
+    
+    .then( userArticles => res.status(200).send(userArticles))
+    .catch(err => {
+        console.log(err);
+        return res.status(500).send({ error: err })
+    
+    })
+
+
+    
+}
+
+
+
+module.exports = { fetchArticles, fetchArticleComments, fetchUserArticles }
