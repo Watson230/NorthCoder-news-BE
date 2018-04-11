@@ -27,7 +27,12 @@ const ArticleSchema = new Schema({
   created_at:{
     type: String,
     default: new Date().getTime()
-  }
+  } ,
+  comments:{
+    type: Array,
+    default:[]
+  } 
+
 });
 
 module.exports = mongoose.model('articles', ArticleSchema);

@@ -131,10 +131,12 @@ function seedDatabase(DBUrl) {
             .then(comments =>
 
               comments.map(comment => comment.save().then(doc => {
-                commentsIds[comment] = doc.id;
+                commentIds[comment] = doc.id;
+                article.comments.push(comment)
                 return doc
 
               })))
+              
           return doc
         })))
 
