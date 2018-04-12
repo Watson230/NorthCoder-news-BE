@@ -4,6 +4,7 @@ const router = express.Router();
 const topicCtrl = require('../controllers/topicsCtrl.js')
 const articlesCtrl =require('../controllers/articlesCtrl')
 const usersCtrl = require('../controllers/usersCtrl')
+const commentsCtrl = require('../controllers/commentsCtrl')
 
 
 console.log('api router')
@@ -32,8 +33,10 @@ router.get('/users/:id/comments', usersCtrl.fetchUserComments)
 
 
 router.put('/articles/:id', articlesCtrl.patchVotes)
+router.put('/comments/:id', commentsCtrl.patchVotes)
 
-router.post('/articles/:article_id/comments', articlesCtrl.addComment)
+
+router.post('/articles/:id/comments', articlesCtrl.addComment)
 
 // router.delete()
 

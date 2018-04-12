@@ -86,10 +86,11 @@ function patchVotes(req, res) {
 }
 
 function addComment(req, res) {
-
+    console.log('hello')
     let articleId = req.params.id
+    console.log(req.body)
     const comment = commentModel({
-        body: req.body,
+        body: req.body.comment,
         belongs_to: articleId
     }).save().then(newComment =>{res.status(200).send(newComment)})
     .catch(err => {
@@ -98,7 +99,6 @@ function addComment(req, res) {
 
     })
 }
-
 
 
 
