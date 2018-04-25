@@ -3,7 +3,7 @@ const PORT = require('./config').PORT[process.env.NODE_ENV];
 const apirouter =  require('./routes/apiRoute').router
 const mongooseConnect = require('./server').mongooseConnect
 const bodyParser = require('body-parser');
-var cors =require('cors');
+const cors =require('cors');
 
 
 mongooseConnect()

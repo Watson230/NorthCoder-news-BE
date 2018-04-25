@@ -33,9 +33,6 @@ function fetchArticleComments(req, res) {
 
     let articleId = req.params.id
 
-
-
-
     return commentModel.find({ 'belongs_to': articleId })
 
         .then(comments => res.status(200).send(comments))

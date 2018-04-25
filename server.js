@@ -1,12 +1,12 @@
 if (!process.env.NODE_ENV) process.env.NODE_ENV = 'dev';
 
-var express = require('express');
-var mongoose = require('mongoose');
-var bodyParser = require('body-parser');
-var app = express();
-var config = require('./config');
-var cors =require('cors')
-var db = config.DB[process.env.NODE_ENV] || process.env.DB;
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const app = express();
+const config = require('./config');
+const cors =require('cors')
+const db = config.DB[process.env.NODE_ENV] || process.env.DB;
 mongoose.Promise = Promise;
 
 function mongooseConnect() {
