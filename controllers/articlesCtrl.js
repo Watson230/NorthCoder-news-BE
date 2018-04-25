@@ -23,6 +23,7 @@ function fetchArticle(req, res) {
         .then(article => res.status(200).send(article))
         .catch(err => {
             console.log(err);
+            // err.name === 'CastError'
             return res.status(500).send({ error: err })
 
         })

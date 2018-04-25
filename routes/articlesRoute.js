@@ -12,7 +12,7 @@ router.get('/:id/comments',articlesCtrl.fetchArticleComments )
 
 router.post('/:id/comments', articlesCtrl.addComment)
 
-router.put('/articles/:id', articlesCtrl.patchVotes)
+router.put('/:id', articlesCtrl.patchVotes)
 
 
 

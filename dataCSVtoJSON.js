@@ -1,5 +1,5 @@
-var csvjson = require('csvjson');
-var fs = require('fs');
+const csvjson = require('csvjson');
+const fs = require('fs');
 let options = {
     delimiter : ',' , // optional
     quote     : '"' // optional
@@ -7,8 +7,8 @@ let options = {
 
 function CVStoJSON (filepath,options){
 
-var file_data = fs.readFileSync(`${filepath}`, { encoding : 'utf8'});
-var result = csvjson.toObject(file_data, options);
+const file_data = fs.readFileSync(`${filepath}`, { encoding : 'utf8'});
+const result = csvjson.toObject(file_data, options);
 
 return result
 

@@ -96,12 +96,6 @@ let comments = function (docId, num) {
 }
 
 
-
-
-
-
-
-
 function seedDatabase(DBUrl) {
 
   const articleIds = {};
