@@ -15,7 +15,7 @@ function fetchAllUsers(req, res) {
 
 function fetchUser(req, res) {
 
-    let user = req.params.id
+    let user = req.params.username
 
     userModel.find({ 'username': `${user}` })
         .then(user => res.status(200).send(user))

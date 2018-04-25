@@ -22,7 +22,7 @@ function fetchTopicsAPI(req, res) {
 function fetchTopicsArticles(req, res, next) {
 
 
-    const topicName = req.params.id
+    const topicName = req.params.topicName
 
     return articleModels.find({ 'belongs_to': topicName })
 

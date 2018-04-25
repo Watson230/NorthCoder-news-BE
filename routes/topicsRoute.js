@@ -6,7 +6,7 @@ const topicCtrl = require('../controllers/topicsCtrl.js')
 
 router.get('/', topicCtrl.fetchTopicsAPI);
 
-router.get('/:id/articles', topicCtrl.fetchTopicsArticles)
+router.get('/:topicName/articles', topicCtrl.fetchTopicsArticles)
 
 
 

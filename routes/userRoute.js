@@ -6,7 +6,7 @@ const usersCtrl = require('../controllers/usersCtrl')
 
 router.get('', usersCtrl.fetchAllUsers)
 
-router.get('/:id', usersCtrl.fetchUser)
+router.get('/:username', usersCtrl.fetchUser)
 
 router.get('/:id/articles', articlesCtrl.fetchUserArticles)
 
