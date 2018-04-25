@@ -2,15 +2,17 @@ const commentModel = require('../models/comments')
 
 
 function patchVotes(req, res) {
+    console.log('vote')
 
     const commentId = req.params.id
     const vote = req.query.vote
-    let voteInc
+    
 
     if (vote === 'up') voteInc = 1
     if (vote === 'down') voteInc = -1
+    
 
-    commentModel.findOneAndUpdate({ '_id': commentId }, { $inc: { votes: voteInc } }, { returnNewDocument: true })
+    commentModel.findOneAndUpdate({ '_id': commentId }, { $inc: { votes: voteInc } }, { 'new': true })
 
         .then(comment=> res.status(200).send(comment))
         .catch(err => {

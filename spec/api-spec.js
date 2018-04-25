@@ -26,7 +26,7 @@ describe('API', (done) => {
 
     describe(' /API', function () {
 
-        describe(' GET /users', function () {
+        describe('GET /users', function () {
             it('responds with users array', function (done) {
                 request(app)
                     .get('/api/users')
@@ -108,6 +108,29 @@ describe('API', (done) => {
                 })
 
             })
+
+        })
+
+        describe(' PUT /comments/:id', function(){
+
+                it('should return an updated articles with increased vote count', function(done){
+                    
+                    let commentId = usefulData.comments[0]._id
+                    console.log(commentId)
+                    request(app)
+                    .put(`/api/comments/${commentId}?vote=up`)
+                    .end((err, res) => {
+                        
+                        expect(res.body.votes).to.equal(1)
+                        expect(res.status).to.equal(200)
+                        done()
+                    })
+
+
+
+                })
+
+
 
         })
 
