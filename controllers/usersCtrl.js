@@ -18,7 +18,10 @@ function fetchUser(req, res) {
     let user = req.params.username
 
     userModel.find({ 'username': `${user}` })
-        .then(user => res.status(200).send(user))
+        .then(user => {
+            if (user.length === 0) return next({ status: 404, msg: `No users with username ${user}` })
+            res.status(200).send(user)
+        })
         .catch(err => {
             console.log(err);
             return res.status(500).send({ error: err })
@@ -32,7 +35,9 @@ function fetchUserComments(req, res) {
     let user = req.params.id
 
     commentModel.find({ "created_by": `${user}` })
-        .then(userComments => res.status(200).send(userComments))
+        .then(userComments => {
+            if (userComments.length === 0) return next({ status: 404, msg: `${user} has made no comments` })
+            res.status(200).send(userComments)})
         .catch(err => {
             console.log(err);
             return res.status(500).send({ error: err })

@@ -222,7 +222,7 @@ describe('API', (done) => {
                             belongs_to:articleId
                         })
                         .end((err, res) => {
-                            console.log(res.body)
+                            
                             expect(res.body.body).to.equal('hello')
                             expect(res.body.belongs_to).to.equal(`${articleId}`)
                             expect(res.status).to.equal(200)
