@@ -73,7 +73,7 @@ function patchVotes(req, res) {
     if (vote === 'up') voteInc = 1
     if (vote === 'down') voteInc = -1
 
-    articleModel.findOneAndUpdate({ '_id': articleId }, { $inc: { votes: voteInc } }, { returnNewDocument: true })
+    articleModel.findOneAndUpdate({ '_id': articleId }, { $inc: { votes: voteInc } }, { 'new': true })
 
         .then(Article => res.status(200).send(Article))
         .catch(err => {
@@ -84,18 +84,19 @@ function patchVotes(req, res) {
 }
 
 function addComment(req, res) {
-    console.log('hello')
+    
     let articleId = req.params.id
-    console.log(req.body)
+    
+   
     const comment = commentModel({
         body: req.body.comment,
         belongs_to: articleId
-    }).save().then(newComment =>{res.status(200).send(newComment)})
-    .catch(err => {
-        console.log(err);
-        return res.status(500).send({ error: err })
+    }).save().then(newComment => { res.status(200).send(newComment) })
+        .catch(err => {
+            console.log(err);
+            return res.status(500).send({ error: err })
 
-    })
+        })
 }
 
 

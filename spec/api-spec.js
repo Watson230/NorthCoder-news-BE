@@ -45,7 +45,7 @@ describe('API', (done) => {
                     request(app)
                         .get(`/api/users/${userID}`)
                         .end((err, res) => {
-                            
+
                             expect(res.body[0].username).to.equal(userID)
                             expect(res.status).to.equal(200)
                             done()
@@ -59,7 +59,7 @@ describe('API', (done) => {
                         request(app)
                             .get(`/api/users/${userID}/comments`)
                             .end((err, res) => {
-                                
+
                                 expect(res.body[0].created_by).to.equal(userID)
                                 expect(res.status).to.equal(200)
                                 done()
@@ -73,36 +73,36 @@ describe('API', (done) => {
 
         })
 
-        describe('GET /topics', function() {
+        describe('GET /topics', function () {
 
-            describe('/topics', function (){
+            describe('/topics', function () {
 
-                it('respond with an array of topics', function(done){
+                it('respond with an array of topics', function (done) {
 
                     request(app)
-                    .get(`/api/topics`)
-                    .end((err, res) => {
-                        expect(res.body.length).to.equal(3)
-                        expect(res.status).to.equal(200)
-                        done()
-                    })
+                        .get(`/api/topics`)
+                        .end((err, res) => {
+                            expect(res.body.length).to.equal(3)
+                            expect(res.status).to.equal(200)
+                            done()
+                        })
 
 
                 })
 
             })
 
-            describe('/topics/:topicName/articles', function (){
+            describe('/topics/:topicName/articles', function () {
 
-                it('respond with an array of articles on a topic', function(done){
-                    let topic= 'football'
+                it('respond with an array of articles on a topic', function (done) {
+                    let topic = 'football'
                     request(app)
-                    .get(`/api/topics/${topic}/articles`)
-                    .end((err, res) => {
-                        expect(res.body.length).to.equal(1)
-                        expect(res.status).to.equal(200)
-                        done()
-                    })
+                        .get(`/api/topics/${topic}/articles`)
+                        .end((err, res) => {
+                            expect(res.body.length).to.equal(1)
+                            expect(res.status).to.equal(200)
+                            done()
+                        })
 
 
                 })
@@ -111,16 +111,16 @@ describe('API', (done) => {
 
         })
 
-        describe(' PUT /comments/:id', function(){
+        describe(' PUT /comments/:id', function () {
 
-                it('should return an updated articles with increased vote count', function(done){
-                    
-                    let commentId = usefulData.comments[0]._id
-                    console.log(commentId)
-                    request(app)
+            it('should return an updated articles with increased vote count', function (done) {
+
+                let commentId = usefulData.comments[0]._id
+                
+                request(app)
                     .put(`/api/comments/${commentId}?vote=up`)
                     .end((err, res) => {
-                        
+
                         expect(res.body.votes).to.equal(1)
                         expect(res.status).to.equal(200)
                         done()
@@ -128,11 +128,118 @@ describe('API', (done) => {
 
 
 
-                })
+            })
 
 
 
         })
+
+        describe('/api/articles', function () {
+
+            describe(' GET /articles', function () {
+
+                it('should respond with array of articles', function (done) {
+
+
+                    request(app)
+                        .get(`/api/articles`)
+                        .end((err, res) => {
+                            
+                            expect(res.body.length).to.equal(2)
+                            expect(res.status).to.equal(200)
+                            done()
+                        })
+
+
+                })
+            })
+
+
+            describe(' GET /articles/:id', function () {
+
+                it('should respond with artices with specified ID', function (done) {
+
+                    let articleId = usefulData.articles[0]._id
+                    request(app)
+                        .get(`/api/articles/${articleId}`)
+                        .end((err, res) => {
+                          
+                            expect(res.body.length).to.equal(1)
+                            expect(res.body[0].belongs_to).to.equal('cats')
+                            expect(res.status).to.equal(200)
+                            done()
+                        })
+
+
+                })
+            })
+
+            describe(' GET /articles', function () {
+
+                it('should respond with array of comments of a specified article', function (done) {
+                    let articleId = usefulData.articles[0]._id
+
+                    request(app)
+                        .get(`/api/articles/${articleId}/comments`)
+                        .end((err, res) => {
+                            
+                            expect(res.body.length).to.equal(2)
+                            expect(res.status).to.equal(200)
+                            done()
+                        })
+
+
+                })
+            })
+
+            describe(' Put /articles/:id', function () {
+
+                it('should increment vote of article with specified ID', function (done) {
+                    let articleId = usefulData.articles[0]._id
+
+                    request(app)
+                        .put(`/api/articles/${articleId}?vote=up`)
+                        .end((err, res) => {
+                            
+                            expect(res.body.votes).to.equal(1)
+                            expect(res.status).to.equal(200)
+                            done()
+                        })
+
+
+                })
+            })
+
+            describe(' POST /articles/:id/comments', function () {
+
+                it('should add new comment to article with specified ID', function (done) {
+                    let articleId = usefulData.articles[1]._id
+
+                    request(app)
+                        .post(`/api/articles/${articleId}/comments`)
+                        .send({
+                            comment:'hello',
+                            belongs_to:articleId
+                        })
+                        .end((err, res) => {
+                            console.log(res.body)
+                            expect(res.body.body).to.equal('hello')
+                            expect(res.body.belongs_to).to.equal(`${articleId}`)
+                            expect(res.status).to.equal(200)
+                            done()
+                        })
+
+
+                })
+            })
+
+
+
+
+
+
+        })
+
 
 
 
