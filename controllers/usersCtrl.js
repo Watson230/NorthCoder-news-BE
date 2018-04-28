@@ -2,7 +2,9 @@ const userModel = require('../models/users')
 const articleModel = require('../models/articles')
 const commentModel = require('../models/comments')
 
-function fetchAllUsers(req, res) {
+
+
+function fetchAllUsers(req, res, next) {
     userModel.find({})
         .then(users => res.status(200).send(users))
         .catch(err => {
@@ -13,14 +15,15 @@ function fetchAllUsers(req, res) {
 
 }
 
-function fetchUser(req, res) {
+function fetchUser(req, res, next) {
 
     let user = req.params.username
 
     userModel.find({ 'username': `${user}` })
         .then(user => {
+
             if (user.length === 0) return next({ status: 404, msg: `No users with username ${user}` })
-            res.status(200).send(user)
+            return res.status(200).send(user)
         })
         .catch(err => {
             console.log(err);
@@ -31,7 +34,7 @@ function fetchUser(req, res) {
 
 }
 
-function fetchUserComments(req, res) {
+function fetchUserComments(req, res, next) {
     let user = req.params.id
 
     commentModel.find({ "created_by": `${user}` })

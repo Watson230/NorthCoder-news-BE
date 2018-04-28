@@ -15,7 +15,7 @@ function fetchArticles(req, res) {
         })
 }
 
-function fetchArticle(req, res) {
+function fetchArticle(req, res, next) {
 
     let articleId = req.params.id
 
@@ -23,20 +23,26 @@ function fetchArticle(req, res) {
         .then(article => res.status(200).send(article))
         .catch(err => {
             console.log(err);
-            // err.name === 'CastError'
-            return res.status(500).send({ error: err })
+            if (err.name === 'CastError') {
+                console.log('404')
+                return next({ status: 404, msg: `article ${articleId} does not exist` })
+            }
+            else return res.status(500).send({ error: err })
 
         })
 }
 
 
-function fetchArticleComments(req, res) {
+function fetchArticleComments(req, res, next) {
 
     let articleId = req.params.id
 
     return commentModel.find({ 'belongs_to': articleId })
 
-        .then(comments => res.status(200).send(comments))
+        .then(comments => {
+            if (comments.length === 0) return next({ status: 404, msg: `article ${articleId} has no comments` })
+            return res.status(200).send(comments)
+        })
         .catch(err => {
             console.log(err);
             return res.status(500).send({ error: err })
@@ -64,7 +70,7 @@ function fetchUserArticles(req, res) {
 
 }
 
-function patchVotes(req, res) {
+function patchVotes(req, res, next) {
 
     const articleId = req.params.id
     const vote = req.query.vote
@@ -78,16 +84,15 @@ function patchVotes(req, res) {
         .then(Article => res.status(200).send(Article))
         .catch(err => {
             console.log(err);
+            if (err.name === 'CastError') return next({ status: 404, msg: `you cannot  vote ${vote} for ${articleId}` })
             return res.status(500).send({ error: err })
 
         })
 }
 
 function addComment(req, res) {
-    
+
     let articleId = req.params.id
-    
-   
     const comment = commentModel({
         body: req.body.comment,
         belongs_to: articleId
