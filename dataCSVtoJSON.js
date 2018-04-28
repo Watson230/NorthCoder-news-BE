@@ -23,4 +23,4 @@ let userJSON = CVStoJSON('./seed/data/users.csv', options)
 let topicsJSON = CVStoJSON('./seed/data/topics.csv', options)
 
 
-module.exports =  { articlesJSON,userJSON,topicsJSON}
+module.exports =  { articlesJSON,userJSON,topicsJSON, CVStoJSON}
