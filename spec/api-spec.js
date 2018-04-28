@@ -307,6 +307,29 @@ describe('API', (done) => {
 
                 })
             })
+            // describe(' DELETE /comment/:id', function () {
+
+            //     it('should delete a comment with specified ID', function (done) {
+            //         let commentId = usefulData.articles[1]._id
+
+            //         request(app)
+            //             .delete(`/api/comments/${commentId}`)
+            //             .send({
+            //                 comment:'hello',
+            //                 belongs_to:articleId
+            //             })
+            //             .end((err, res) => {
+                            
+            //                 expect(res.body.body).to.equal('hello')
+            //                 expect(res.body.belongs_to).to.equal(`${articleId}`)
+            //                 expect(res.status).to.equal(200)
+            //                 done()
+            //             })
+
+
+            //     })
+            // })
+
 
 
 

@@ -26,4 +26,22 @@ function patchVotes(req, res, next) {
 }
 
 
-module.exports={patchVotes}
+function deleteComment(req, res, next) {
+   
+
+    const commentId = req.params.id
+   
+    commentModel.findByIdAndRemove({ '_id': commentId })
+
+        .then(comment=> {
+            return res.status(200).send(`comment ${commentId} has been deleted`)})
+
+        .catch(err => {
+            console.log(err);
+            if(err.name === 'CastError') return next({ status: 404, msg: `comment ${commentId} does not exist` })
+            return res.status(500).send({ error: err })
+
+        })
+}
+
+module.exports={patchVotes, deleteComment}
