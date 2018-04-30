@@ -6,6 +6,8 @@ const articlesCtrl =require('../controllers/articlesCtrl')
 
 router.get('',articlesCtrl.fetchArticles )
 
+router.get('/mostPopular',articlesCtrl.fetchMostPopularArticles )
+
 router.get('/:id', articlesCtrl.fetchArticle)
 
 router.get('/:id/comments',articlesCtrl.fetchArticleComments )

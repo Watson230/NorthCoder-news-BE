@@ -18,6 +18,7 @@ function fetchAllUsers(req, res, next) {
 function fetchUser(req, res, next) {
 
     let user = req.params.username
+    console.log(user)
 
     userModel.find({ 'username': `${user}` })
         .then(user => {

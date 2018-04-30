@@ -6,7 +6,20 @@ function fetchArticles(req, res) {
     const lastSeen = req.query.last_seen;
     const query = lastSeen ? { _id: { $gt: lastSeen } } : {};
 
-    return articleModel.find(query).limit(10)
+    return articleModel.find()
+        .then(articles => res.status(200).send(articles))
+        .catch(err => {
+            console.log(err);
+            return res.status(500).send({ error: err })
+
+        })
+}
+
+function fetchMostPopularArticles(req, res) {
+    const lastSeen = req.query.last_seen;
+    const query = lastSeen ? { _id: { $gt: lastSeen } } : {};
+
+    return articleModel.find().sort({'votes':-1}).limit(10)
         .then(articles => res.status(200).send(articles))
         .catch(err => {
             console.log(err);
@@ -20,7 +33,11 @@ function fetchArticle(req, res, next) {
     let articleId = req.params.id
 
     return articleModel.find({ '_id': articleId })
-        .then(article => res.status(200).send(article))
+        .then(article => { 
+            
+            res.status(200).send(article)
+        })
+        
         .catch(err => {
             console.log(err);
             if (err.name === 'CastError') {
@@ -108,4 +125,4 @@ function addComment(req, res) {
 
 
 
-module.exports = { fetchArticles, fetchArticleComments, fetchUserArticles, fetchArticle, patchVotes, addComment }
+module.exports = { fetchArticles, fetchArticleComments, fetchUserArticles, fetchArticle, patchVotes, addComment, fetchMostPopularArticles }
