@@ -23,6 +23,6 @@ app.use((err, req, res, next) => {
   res.status(500).send(err);
 });
 
-app.listen(PORT, function () {
+app.listen(process.env.PORT, function () {
   console.log(`listening on port ${process.env.PORT}`);
 });
