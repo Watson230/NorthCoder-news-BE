@@ -12,6 +12,7 @@ const app = express();
 const config = require('./config');
 const cors = require('cors');
 const db = config.DB[process.env.NODE_ENV] || process.env.DB;
+const path = require('path');
 mongoose.Promise = Promise;
 
 
@@ -26,6 +27,12 @@ mongoose.connect(process.env.DB_URI, { useMongoClient: true })
 app.use(cors());
 
 app.use(bodyParser.json());
+
+app.get('/', (req, res)=>{
+    
+  return res.status(200).sendfile(path.join(__dirname + '/endPoints.html'));
+}
+);
 
 app.use('/api', apirouter);
 
