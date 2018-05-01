@@ -1,47 +1,43 @@
-const commentModel = require('../models/comments')
+const commentModel = require('../models/comments');
 
 
 function patchVotes(req, res, next) {
    
 
-    const commentId = req.params.id
-    const vote = req.query.vote
+  const commentId = req.params.id;
+  const vote = req.query.vote;
+  let voteInc;
+
+  if (vote === 'up') voteInc = 1;
+  if (vote === 'down') voteInc = -1;
     
 
-    if (vote === 'up') voteInc = 1
-    if (vote === 'down') voteInc = -1
-    
+  commentModel.findOneAndUpdate({ '_id': commentId }, { $inc: { votes: voteInc } }, { 'new': true })
+    .then(comment=> {
+      return res.status(200).send(comment);})
 
-    commentModel.findOneAndUpdate({ '_id': commentId }, { $inc: { votes: voteInc } }, { 'new': true })
-
-        .then(comment=> {
-            return res.status(200).send(comment)})
-
-        .catch(err => {
-            console.log(err);
-            if(err.name === 'CastError') return next({ status: 404, msg: `comment ${commentId} does not exist` })
-            return res.status(500).send({ error: err })
-
-        })
+    .catch(err => {
+    //   console.log(err);
+      if(err.name === 'CastError') return next({ status: 404, msg: `comment ${commentId} does not exist` });
+      return res.status(500).send({ error: err });
+    });
 }
 
 
 function deleteComment(req, res, next) {
    
 
-    const commentId = req.params.id
-   
-    commentModel.findByIdAndRemove({ '_id': commentId })
+  const commentId = req.params.id;
+  commentModel.findByIdAndRemove({ '_id': commentId })
+    .then(comment=> {
+      return res.status(200).send(`comment ${commentId} has been deleted`);})
 
-        .then(comment=> {
-            return res.status(200).send(`comment ${commentId} has been deleted`)})
+    .catch(err => {
+    //   console.log(err);
+      if(err.name === 'CastError') return next({ status: 404, msg: `comment ${commentId} does not exist` });
+      return res.status(500).send({ error: err });
 
-        .catch(err => {
-            console.log(err);
-            if(err.name === 'CastError') return next({ status: 404, msg: `comment ${commentId} does not exist` })
-            return res.status(500).send({ error: err })
-
-        })
+    });
 }
 
-module.exports={patchVotes, deleteComment}
+module.exports={patchVotes, deleteComment};

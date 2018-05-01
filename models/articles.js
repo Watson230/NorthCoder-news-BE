@@ -24,14 +24,14 @@ const ArticleSchema = new Schema({
     lowercase: true
   },
 
-  created_at:{
+  created_at: {
     type: String,
     default: new Date().getTime()
-  } ,
-  comments:{
+  },
+  comments: {
     type: Array,
-    default:[]
-  } 
+    default: []
+  }
 
 });
 

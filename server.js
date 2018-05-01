@@ -3,10 +3,10 @@ if (!process.env.NODE_ENV) process.env.NODE_ENV = 'dev';
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const apirouter =  require('./routes/apiRoute').router
+const apirouter =  require('./routes/apiRoute').router;
 const app = express();
 const config = require('./config');
-const cors = require('cors')
+const cors = require('cors');
 const db = config.DB[process.env.NODE_ENV] || process.env.DB;
 mongoose.Promise = Promise;
 
@@ -19,11 +19,11 @@ mongoose.connect(db, { useMongoClient: true })
 
 
 
-app.use(cors())
+app.use(cors());
 
 app.use(bodyParser.json());
 
-app.use('/api', apirouter)
+app.use('/api', apirouter);
 
 
 module.exports = {app};

@@ -5,36 +5,36 @@ var mongoose = require('mongoose');
 let Chance = require('chance');
 let chance = new Chance();
 mongoose.Promise = global.Promise;
-const DBUrl = require(`../config`).DB.dev
+const DBUrl = require('../config').DB.dev;
 
 
 let articleData = require('../dataCSVtoJSON').articlesJSON;
 let userData = require('../dataCSVtoJSON').userJSON;
-const usernamesArr = userData.map(user => { return user.username });
-let topicsData = require('../dataCSVtoJSON').topicsJSON
+const usernamesArr = userData.map(user => { return user.username ;});
+let topicsData = require('../dataCSVtoJSON').topicsJSON;
 
 // This should seed your development database using the CSV file data
 // Feel free to use the async library, or native Promises, to handle the asynchronicity of the seeding operations.
 
-let article_id = []
+let article_id = [];
 let articles = function () {
 
 
   return new Promise((resolve, reject) => {
 
     resolve(articleData.map(article => {
-        article.belongs_to = article.topic,
-        article.created_by = chance.pickone(userData.map(user => { return user.username }))
-        article.created_at = chance.date()
-        article.votes= Math.floor(Math.random() * 30) + 1 
+      article.belongs_to = article.topic,
+      article.created_by = chance.pickone(userData.map(user => { return user.username;}));
+      article.created_at = chance.date();
+      article.votes= Math.floor(Math.random() * 30) + 1 ;
 
-      return new models.Articles(article)
+      return new models.Articles(article);
 
      
 
-    }))
-  })
-}
+    }));
+  });
+};
 
 let users = function () {
   return new Promise((resolve, reject) => {
@@ -43,12 +43,12 @@ let users = function () {
     resolve(userData.map(user => {
 
 
-      return new models.Users(user)
+      return new models.Users(user);
 
-    }))
+    }));
 
-  })
-}
+  });
+};
 
 let topics = function () {
 
@@ -56,12 +56,12 @@ let topics = function () {
 
     resolve(topicsData.map(topic => {
 
-      return new models.Topics(topic)
+      return new models.Topics(topic);
 
 
-    }))
+    }));
 
-    reject(console.log(error))
+    reject(console.log(error));
 
   });
 
@@ -85,15 +85,15 @@ let comments = function (docId, num) {
        
       };
 
-      return new models.Comments(comment)
+      return new models.Comments(comment);
 
 
-    })
-    resolve(commentsArray)
+    });
+    resolve(commentsArray);
 
-  })
+  });
 
-}
+};
 
 
 function seedDatabase(DBUrl) {
@@ -101,7 +101,7 @@ function seedDatabase(DBUrl) {
   const articleIds = {};
   // const article_id =[];
   const topicsIds = {};
-  const userIds = {}
+  const userIds = {};
   const commentIds = {};
 
   return mongoose.connect(DBUrl, { useMongoClient: true })
@@ -112,55 +112,55 @@ function seedDatabase(DBUrl) {
 
     .then(() => {
 
-      const articlesPromises = articles()
+      const articlesPromises = articles();
       //  console.log(typeof articlesPromises,'articles promise')
-      articlesPromises.then(articles => articles.map((article, i) =>
+      articlesPromises.then(articles => articles.map((article) =>
 
         article.save().then(doc => {
           articleIds[article] = doc.id;
 
-          article_id.push(doc._id)
+          article_id.push(doc._id);
 
           const commentPromises = comments(doc._id, Math.round(Math.random() * 10))
             .then(comments =>
 
               comments.map(comment => comment.save().then(doc => {
                 commentIds[comment] = doc.id;
-                article.comments.push(comment)
-                return doc
+                article.comments.push(comment);
+                return doc;
 
-              })))
+              })));
               
-          return doc
-        })))
+          return doc;
+        })));
 
       const topicsPromises = topics()
         .then(topics => topics.map(topic => topic.save().then(doc => {
           topicsIds[topic] = doc.id;
-          return doc
+          return doc;
 
-        })))
+        })));
 
       const userPromises = users()
         .then(users => users.map(user => user.save().then(doc => {
           userIds[user] = doc.id;
-          return doc
+          return doc;
 
-        })))
+        })));
 
 
 
 
       console.log('Database seeded!');
 
-      return Promise.all([Promise.all(articlesPromises), Promise.all(topicsPromises), Promise.all(userPromises), Promise.all(commentPromises)])
+      return Promise.all([Promise.all(articlesPromises), Promise.all(topicsPromises), Promise.all(userPromises), Promise.all(commentPromises)]);
 
 
-    })
+    });
 
 
 
 }
 
-seedDatabase(DBUrl)
+seedDatabase(DBUrl);
   
