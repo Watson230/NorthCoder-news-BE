@@ -10,11 +10,7 @@ const userRouter = require('../routes/userRoute');
 
 
 
-router.use('/', (req, res)=>{
-    
-  return res.status(200).sendfile(path.join(__dirname + '/endPoints.html'));
-}
-);
+
 
 router.use('/topics', topicsRouter);
 
