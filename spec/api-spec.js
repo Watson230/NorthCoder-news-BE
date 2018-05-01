@@ -6,7 +6,7 @@ const saveTestData = require('../seed/test.seed.js');
 const mongoose = require('mongoose');
 const app = require('../server').app;
 
-describe('API', (done) => {
+describe('API', () => {
   let usefulData = {};
   beforeEach(() => {
     return mongoose.connection
@@ -15,7 +15,7 @@ describe('API', (done) => {
       .then(data => {
         usefulData = data;
       })
-      .catch(console.log);
+      .catch();
   });
 
   after(() => {

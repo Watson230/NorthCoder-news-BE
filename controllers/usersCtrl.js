@@ -1,13 +1,15 @@
+/*eslint-disable no-console*/
+
 const userModel = require('../models/users');
 const commentModel = require('../models/comments');
 
 
 
-function fetchAllUsers(req, res, next) {
+function fetchAllUsers(req, res) {
   userModel.find({})
     .then(users => res.status(200).send(users))
     .catch(err => {
-       console.log(err);
+      console.log(err);
       return res.status(500).send({ error: err });
 
     });
@@ -17,8 +19,6 @@ function fetchAllUsers(req, res, next) {
 function fetchUser(req, res, next) {
 
   let user = req.params.username;
-    console.log(user);
-
   userModel.find({ 'username': `${user}` })
     .then(user => {
 
@@ -42,7 +42,7 @@ function fetchUserComments(req, res, next) {
       if (userComments.length === 0) return next({ status: 404, msg: `${user} has made no comments` });
       res.status(200).send(userComments);})
     .catch(err => {
-     console.log(err);
+      console.log(err);
       return res.status(500).send({ error: err });
 
     });

@@ -1,3 +1,4 @@
+/*eslint-disable no-console*/
 const app = require('./server').app;
 const PORT = require('./config').PORT[process.env.NODE_ENV];
 const apirouter =  require('./routes/apiRoute').router;
@@ -23,5 +24,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, function () {
-  console.log(`listening on port ${PORT}`);
+  console.log(`listening on port ${process.env.PORT}`);
 });

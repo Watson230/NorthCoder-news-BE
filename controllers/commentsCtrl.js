@@ -1,3 +1,5 @@
+/*eslint-disable no-console*/
+
 const commentModel = require('../models/comments');
 
 
@@ -17,7 +19,7 @@ function patchVotes(req, res, next) {
       return res.status(200).send(comment);})
 
     .catch(err => {
-    //   console.log(err);
+      console.log(err);
       if(err.name === 'CastError') return next({ status: 404, msg: `comment ${commentId} does not exist` });
       return res.status(500).send({ error: err });
     });
@@ -30,10 +32,10 @@ function deleteComment(req, res, next) {
   const commentId = req.params.id;
   commentModel.findByIdAndRemove({ '_id': commentId })
     .then(comment=> {
-      return res.status(200).send(`comment ${commentId} has been deleted`);})
+      return res.status(200).send(`comment ${comment._id} has been deleted`);})
 
     .catch(err => {
-    //   console.log(err);
+      console.log(err);
       if(err.name === 'CastError') return next({ status: 404, msg: `comment ${commentId} does not exist` });
       return res.status(500).send({ error: err });
 

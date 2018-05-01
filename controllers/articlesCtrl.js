@@ -1,8 +1,10 @@
+/*eslint-disable no-console*/
+
 const articleModel = require('../models/articles');
 const commentModel = require('../models/comments');
 
 
-function fetchArticles(req, res) {
+function fetchArticles(req, res, next) {
   //   const lastSeen = req.query.last_seen;
   //   const query = lastSeen ? { _id: { $gt: lastSeen } } : {};
 
@@ -10,6 +12,10 @@ function fetchArticles(req, res) {
     .then(articles => res.status(200).send(articles))
     .catch(err => {
     //   console.log(err);
+      if (err.name === 'CastError') {
+        
+        return next({ status: 404, msg: 'articles not found' });
+      }
       return res.status(500).send({ error: err });
     
     });
@@ -68,7 +74,7 @@ function fetchArticleComments(req, res, next) {
 
 }
 
-function fetchUserArticles(req, res) {
+function fetchUserArticles(req, res, next) {
 
   let user = req.params.id;
 

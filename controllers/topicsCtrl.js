@@ -1,3 +1,5 @@
+/*eslint-disable no-console*/
+
 const topicModels = require('../models/topics');
 const articleModels = require('../models/articles');
 
@@ -9,12 +11,14 @@ function fetchTopicsAPI(req, res) {
   return topicModels.find({})
     .then(topics => res.status(200).send(topics))
     .catch(err => {
-     console.log(err);
+      console.log(err);
       return res.status(500).send({ error: err });
 
     });
 
 }
+
+
 
 
 

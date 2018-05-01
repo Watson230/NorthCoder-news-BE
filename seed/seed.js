@@ -1,17 +1,25 @@
+/*eslint-disable no-console*/
 
+if (!process.env.NODE_ENV) process.env.NODE_ENV = 'dev';
+require('dotenv').config({
+  path: `./.${process.env.NODE_ENV}.env`
+});
 
-var models = require('../models/models');
-var mongoose = require('mongoose');
+const models = require('../models/models');
+const mongoose = require('mongoose');
 let Chance = require('chance');
 let chance = new Chance();
 mongoose.Promise = global.Promise;
 const DBUrl = require('../config').DB.dev;
 
 
+
 let articleData = require('../dataCSVtoJSON').articlesJSON;
 let userData = require('../dataCSVtoJSON').userJSON;
 const usernamesArr = userData.map(user => { return user.username ;});
 let topicsData = require('../dataCSVtoJSON').topicsJSON;
+
+
 
 // This should seed your development database using the CSV file data
 // Feel free to use the async library, or native Promises, to handle the asynchronicity of the seeding operations.
@@ -30,9 +38,10 @@ let articles = function () {
 
       return new models.Articles(article);
 
-     
+  
 
     }));
+    reject();
   });
 };
 
@@ -46,6 +55,7 @@ let users = function () {
       return new models.Users(user);
 
     }));
+    reject();
 
   });
 };
@@ -61,7 +71,7 @@ let topics = function () {
 
     }));
 
-    reject(console.log(error));
+    reject();
 
   });
 
@@ -90,21 +100,26 @@ let comments = function (docId, num) {
 
     });
     resolve(commentsArray);
+    reject();
 
   });
+  
 
 };
 
 
-function seedDatabase(DBUrl) {
-
+function seedDatabase() {
+ 
   const articleIds = {};
   // const article_id =[];
   const topicsIds = {};
   const userIds = {};
   const commentIds = {};
 
-  return mongoose.connect(DBUrl, { useMongoClient: true })
+  return mongoose.connect(process.env.DB_URI, {useMongoClient: true },(err) => {
+    if (err) console.log(err);
+    else console.log('connection to ' + process.env.DB_URI + ' successful');
+  })
 
     .then(() => {
       mongoose.connection.db.dropDatabase();
@@ -147,18 +162,21 @@ function seedDatabase(DBUrl) {
           return doc;
 
         })));
+      console.log(`${process.env.DB_URI} Seeded`);
+
+      return Promise.all([Promise.all(articlesPromises), Promise.all(topicsPromises), Promise.all(userPromises), Promise.all(commentPromises)])
+        .then(()=>{
+          console.log(`${process.env.DB_URI} Seeded`);
+          process.exit();
+        });
 
 
+      
 
 
-      console.log('Database seeded!');
-
-      return Promise.all([Promise.all(articlesPromises), Promise.all(topicsPromises), Promise.all(userPromises), Promise.all(commentPromises)]);
-
-
+      
     });
-
-
+  
 
 }
 

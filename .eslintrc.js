@@ -3,9 +3,10 @@ module.exports = {
     "env": {
         "es6": true,
         "node": true,
-        "mocha": true
+        "mocha": true,
+        "mongo": true
     },
-    "extends": ["eslint:recommended", 'plugin:react/recommended','plugin:mocha/recommended'],
+    "extends": ["eslint:recommended", 'plugin:react/recommended'],
     "parserOptions": {
         "sourceType": "module"
     },
