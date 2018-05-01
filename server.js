@@ -18,7 +18,7 @@ mongoose.Promise = Promise;
 
 
 mongoose.connect(process.env.DB_URI, { useMongoClient: true })
-  .then(() => console.log('successfully connected to', db))
+  .then(() => console.log('successfully connected to', process.env.DB_URI))
   .catch(err => console.log('connection failed', err));
 
 
