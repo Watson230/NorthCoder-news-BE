@@ -109,7 +109,7 @@ function addComment(req, res) {
 
   let articleId = req.params.id;
 
-  const comment = commentModel({
+  commentModel({
     body: req.body.comment,
     belongs_to: articleId
   }).save().then(newComment => { res.status(200).send(newComment);})

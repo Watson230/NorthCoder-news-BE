@@ -5,7 +5,7 @@ const articleModels = require('../models/articles');
 
 
 
-function fetchTopicsAPI(req, res) {
+function fetchTopics(req, res) {
 
 
   return topicModels.find({})
@@ -40,4 +40,4 @@ function fetchTopicsArticles(req, res, next) {
 
 }
 
-module.exports = { fetchTopicsAPI, fetchTopicsArticles };
+module.exports = { fetchTopics, fetchTopicsArticles };
