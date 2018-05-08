@@ -11,7 +11,7 @@ const apirouter =  require('./routes/apiRoute').router;
 const app = express();
 const config = require('./config');
 const cors = require('cors');
-const db = config.DB[process.env.NODE_ENV] || process.env.DB;
+
 const path = require('path');
 mongoose.Promise = Promise;
 

@@ -1,7 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const path = require('path');
-
 const topicsRouter = require('../routes/topicsRoute');
 const articlesRouter = require('../routes/articlesRoute');
 const commentsRouter = require('../routes/commentsRoute');

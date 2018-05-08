@@ -7,6 +7,6 @@ router.put('/:id', commentsCtrl.patchVotes);
 router.delete('/:id', commentsCtrl.deleteComment);
 
 
-// router.delete()
+
 
 module.exports = router;
