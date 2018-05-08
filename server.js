@@ -36,5 +36,9 @@ app.get('/', (req, res)=>{
 
 app.use('/api', apirouter);
 
+app.use((err, req, res, next) => {
+  res.status(500).send('500 - Unknown error');
+});
+
 
 module.exports = {app};

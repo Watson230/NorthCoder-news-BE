@@ -1,20 +1,25 @@
 const express = require('express');
 const router = express.Router();
 
-const articlesCtrl =require('../controllers/articlesCtrl');
+const fetchArticles =require('../controllers/articlesCtrl').fetchArticles;
+const fetchMostPopularArticles = require('../controllers/articlesCtrl').fetchMostPopularArticles;
+const fetchArticle= require('../controllers/articlesCtrl').fetchArticle;
+const fetchArticleComments= require('../controllers/articlesCtrl').fetchArticleComments;
+const addComment= require('../controllers/articlesCtrl').addComment;
+const patchVotes= require('../controllers/articlesCtrl').patchVotes;
 
 
-router.get('',articlesCtrl.fetchArticles );
+router.get('', fetchArticles );
 
-router.get('/mostPopular',articlesCtrl.fetchMostPopularArticles );
+router.get('/mostPopular',fetchMostPopularArticles );
 
-router.get('/:id', articlesCtrl.fetchArticle);
+router.get('/:id', fetchArticle);
 
-router.get('/:id/comments',articlesCtrl.fetchArticleComments );
+router.get('/:id/comments',fetchArticleComments );
 
-router.post('/:id/comments', articlesCtrl.addComment);
+router.post('/:id/comments', addComment);
 
-router.put('/:id', articlesCtrl.patchVotes);
+router.put('/:id', patchVotes);
 
 
 
