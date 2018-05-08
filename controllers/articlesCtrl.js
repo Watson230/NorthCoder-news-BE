@@ -36,7 +36,7 @@ function fetchArticle(req, res, next) {
       if (err.name === 'CastError') {    
         return next({ status: 404, msg: `article ${articleId} does not exist` });
       }
-      else return next(err);
+      return next(err);
     });
 }
 
@@ -78,7 +78,7 @@ function fetchUserArticles(req, res, next) {
       if (err.name === 'CastError') {    
         return next({ status: 404, msg: `user ${user} artlices could not be found ` });
       }
-      return res.status(500).send({ error: err });
+      return next(err);
 
     });
 
@@ -100,12 +100,12 @@ function patchVotes(req, res, next) {
     .catch(err => {
    
       if (err.name === 'CastError') return next({ status: 404, msg: `article  ${articleId} does not exist` });
-      return res.status(500).send({ error: err });
+      return next(err);
 
     });
 }
 
-function addComment(req, res) {
+function addComment(req, res, next) {
 
   let articleId = req.params.id;
 
@@ -114,8 +114,8 @@ function addComment(req, res) {
     belongs_to: articleId
   }).save().then(newComment => { res.status(200).send(newComment);})
     .catch(err => {
-      // console.log(err);
-      return res.status(500).send({ error: err });
+    
+      return next(err);
 
     });
 }
