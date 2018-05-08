@@ -1,17 +1,13 @@
-/*eslint-disable no-console*/
-
 const userModel = require('../models/users');
 const commentModel = require('../models/comments');
 
 
 
-function fetchAllUsers(req, res) {
+function fetchAllUsers(req, res, next) {
   userModel.find({})
     .then(users => res.status(200).send(users))
     .catch(err => {
-      console.log(err);
-      return res.status(500).send({ error: err });
-
+      return next(err);
     });
 
 }
@@ -21,14 +17,14 @@ function fetchUser(req, res, next) {
   let user = req.params.username;
   userModel.find({ 'username': `${user}` })
     .then(user => {
-
       if (user.length === 0) return next({ status: 404, msg: `No users with username ${user}` });
       return res.status(200).send(user);
     })
     .catch(err => {
-      console.log(err);
-      return res.status(500).send({ error: err });
-
+      if (err.name === 'CastError') {    
+        return next({ status: 404, msg: `${user} doest not exist`});
+      }
+      return next(err);
     });
 
 
@@ -39,12 +35,13 @@ function fetchUserComments(req, res, next) {
 
   commentModel.find({ 'created_by': `${user}` })
     .then(userComments => {
-      if (userComments.length === 0) return next({ status: 404, msg: `${user} has made no comments` });
-      res.status(200).send(userComments);})
+      if (userComments.length === 0) return res.status(200).send({msg:`${user} has made no comments` });
+      return res.status(200).send(userComments);})
     .catch(err => {
-      console.log(err);
-      return res.status(500).send({ error: err });
-
+      if (err.name === 'CastError') {    
+        return next({ status: 404, msg: `${user} doest not exist`});
+      }
+      return next(err);
     });
 
 }

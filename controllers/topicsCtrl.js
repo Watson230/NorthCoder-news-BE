@@ -17,16 +17,12 @@ function fetchTopics(req, res) {
 
 }
 
-
-
-
-
 function fetchTopicsArticles(req, res, next) {
 
   const topicName = req.params.topicName;
   return articleModels.find({ 'belongs_to': topicName })
     .then(articles =>  {
-      if (articles.length === 0) return res.status(200).send({msg: `No articles for ${topicName}`});
+      if (articles.length === 0) return next({ status: 404, msg:`Thre are no articles for topic:${topicName}  ` });
       res.status(200).send(articles);
     }
     )

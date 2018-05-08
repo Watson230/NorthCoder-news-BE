@@ -27,11 +27,11 @@ function deleteComment(req, res, next) {
   const commentId = req.params.id;
   commentModel.findByIdAndRemove({ '_id': commentId })
     .then(comment=> {
-      return res.status(200).send(`comment ${comment._id} has been deleted`);})
+      return res.status(204).send(`comment ${comment._id} has been deleted`);})
 
     .catch(err => {
       
-      if(err.name === 'CastError') return next({ status: 204, msg: `comment ${commentId} does not exist` });
+      if(err.name === 'CastError') return next({ status: 404, msg: `comment ${commentId} does not exist` });
       return res.status(500).send({ error: err });
 
     });
