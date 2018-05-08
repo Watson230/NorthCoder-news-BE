@@ -37,7 +37,12 @@ app.get('/', (req, res)=>{
 app.use('/api', apirouter);
 
 app.use((err, req, res, next) => {
-  res.status(500).send('500 - Unknown error');
+  if (err.status === 404) return res.status(404).send(err);
+  next();
+});
+
+app.use((err, req, res, next) => {
+  res.status(500).send('500 - An unknown error has occurred ');
 });
 
 

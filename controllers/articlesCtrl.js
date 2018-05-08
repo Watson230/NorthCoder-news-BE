@@ -5,30 +5,21 @@ const commentModel = require('../models/comments');
 
 
 function fetchArticles(req, res, next) {
-  //   const lastSeen = req.query.last_seen;
-  //   const query = lastSeen ? { _id: { $gt: lastSeen } } : {};
 
   return articleModel.find()
     .then(articles => res.status(200).send(articles))
     .catch(err => {
-    //   console.log(err);
-      if (err.name === 'CastError') {
-        
-        return next({ status: 404, msg: 'articles not found' });
-      }
-      return res.status(500).send({ error: err });
-    
+      return next(err);
     });
 }
 
-function fetchMostPopularArticles(req, res) {
+function fetchMostPopularArticles(req, res, next) {
  
-
   return articleModel.find().sort({ 'votes': -1 }).limit(10)
     .then(articles => res.status(200).send(articles))
     .catch(err => {
-    //   console.log(err);
-      return res.status(500).send({ error: err });
+    
+      return next(err);
 
     });
 }
@@ -39,18 +30,13 @@ function fetchArticle(req, res, next) {
 
   return articleModel.find({ '_id': articleId })
     .then(article => {
-
-      res.status(200).send(article);
+      return res.status(200).send(article);
     })
-
     .catch(err => {
-    //   console.log(err);
-      if (err.name === 'CastError') {
-        
+      if (err.name === 'CastError') {    
         return next({ status: 404, msg: `article ${articleId} does not exist` });
       }
-      else return res.status(500).send({ error: err });
-
+      else return next(err);
     });
 }
 
@@ -62,12 +48,15 @@ function fetchArticleComments(req, res, next) {
   return commentModel.find({ 'belongs_to': articleId })
 
     .then(comments => {
-      if (comments.length === 0) return next({ status: 404, msg: `article ${articleId} has no comments` });
+      if (comments.length === 0) return res.status(200).send(` article ${articleId} does not have any comments`);
       return res.status(200).send(comments);
     })
     .catch(err => {
-    //   console.log(err);
-      return res.status(500).send({ error: err });
+   
+      if (err.name === 'CastError') {    
+        return next({ status: 404, msg: `comments for  ${articleId} could not be found ` });
+      }
+      else return next(err);
 
     });
 
@@ -82,10 +71,13 @@ function fetchUserArticles(req, res, next) {
   articleModel.find({ 'created_by': `${user}` })
 
     .then(userArticles => {
-      if (userArticles.length === 0) return next({ status: 404, msg: `${user} has no articles` });
+      if (userArticles.length === 0) return res.status(200).send({msg: `${user} has no articles`});
       return res.status(200).send(userArticles);})
     .catch(err => {
-    //   console.log(err);
+   
+      if (err.name === 'CastError') {    
+        return next({ status: 404, msg: `user ${user} artlices could not be found ` });
+      }
       return res.status(500).send({ error: err });
 
     });
@@ -98,7 +90,7 @@ function patchVotes(req, res, next) {
 
   const articleId = req.params.id;
   const vote = req.query.vote;
-  let voteInc;
+  let voteInc = 0;
 
   if (vote === 'up') voteInc = 1;
   if (vote === 'down') voteInc = -1;
@@ -106,8 +98,8 @@ function patchVotes(req, res, next) {
   articleModel.findOneAndUpdate({ '_id': articleId }, { $inc: { votes: voteInc } }, { 'new': true })
     .then(Article => res.status(200).send(Article))
     .catch(err => {
-    //   console.log(err);
-      if (err.name === 'CastError') return next({ status: 404, msg: `you cannot  vote ${vote} for ${articleId}` });
+   
+      if (err.name === 'CastError') return next({ status: 404, msg: `article  ${articleId} does not exist` });
       return res.status(500).send({ error: err });
 
     });
