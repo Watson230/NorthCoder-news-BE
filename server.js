@@ -9,16 +9,14 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const apirouter =  require('./routes/apiRoute').router;
 const app = express();
-const config = require('./config');
 const cors = require('cors');
-
 const path = require('path');
 mongoose.Promise = Promise;
 
 
 
 
-mongoose.connect(process.env.DB_URI, { useMongoClient: true })
+mongoose.connect(process.env.DB_URI)
   .then(() => console.log('successfully connected to', process.env.DB_URI))
   .catch(err => console.log('connection failed', err));
 
@@ -41,8 +39,8 @@ app.use((err, req, res, next) => {
   next();
 });
 
-app.use((err, req, res, next) => {
-  res.status(500).send('500 - An unknown error has occurred ');
+app.use((err, req, res) => {
+  return res.status(500).send('500 - An unknown error has occurred ');
 });
 
 
