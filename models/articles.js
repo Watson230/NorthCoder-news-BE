@@ -21,7 +21,8 @@ const ArticleSchema = new Schema({
   },
   created_by: {
     type: String,
-    lowercase: true
+    lowercase: true,
+    default: 'northcoder'
   },
 
   created_at: {
