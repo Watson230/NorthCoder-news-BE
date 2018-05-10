@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-const topicCtrl = require('../controllers/topicsCtrl.js');
+const{ fetchTopics, fetchTopicsArticles }= require('../controllers/topicsCtrl.js');
 
 
-router.get('/', topicCtrl.fetchTopics);
+router.get('/', fetchTopics);
 
-router.get('/:topicName/articles', topicCtrl.fetchTopicsArticles);
+router.get('/:topicName/articles', fetchTopicsArticles);
 
 
 

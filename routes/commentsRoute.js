@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const commentsCtrl = require('../controllers/commentsCtrl');
+const {patchVotes, deleteComment} = require('../controllers/commentsCtrl');
 
-router.put('/:id', commentsCtrl.patchVotes);
-router.delete('/:id', commentsCtrl.deleteComment);
+router.put('/:id', patchVotes);
+router.delete('/:id', deleteComment);
 
 
 

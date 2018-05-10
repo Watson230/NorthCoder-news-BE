@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
 
-const articlesCtrl =require('../controllers/articlesCtrl');
-const usersCtrl = require('../controllers/usersCtrl');
+const{fetchUserArticles} =require('../controllers/articlesCtrl');
+const{fetchUser,fetchUserComments, fetchAllUsers} = require('../controllers/usersCtrl');
 
-router.get('', usersCtrl.fetchAllUsers);
+router.get('', fetchAllUsers);
 
-router.get('/:username', usersCtrl.fetchUser);
+router.get('/:username', fetchUser);
 
-router.get('/:id/articles', articlesCtrl.fetchUserArticles);
+router.get('/:id/articles', fetchUserArticles);
 
-router.get('/:id/comments', usersCtrl.fetchUserComments);
+router.get('/:id/comments', fetchUserComments);
 
 
 module.exports = router;

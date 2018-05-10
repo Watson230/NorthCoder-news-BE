@@ -1,12 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const fetchArticles =require('../controllers/articlesCtrl').fetchArticles;
-const fetchMostPopularArticles = require('../controllers/articlesCtrl').fetchMostPopularArticles;
-const fetchArticle= require('../controllers/articlesCtrl').fetchArticle;
-const fetchArticleComments= require('../controllers/articlesCtrl').fetchArticleComments;
-const addComment= require('../controllers/articlesCtrl').addComment;
-const patchVotes= require('../controllers/articlesCtrl').patchVotes;
+const {fetchArticles,fetchArticleComments,fetchArticle, 
+  patchVotes,addComment,fetchMostPopularArticles} =require('../controllers/articlesCtrl');
+
 
 
 router.get('', fetchArticles );
