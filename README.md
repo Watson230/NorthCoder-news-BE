@@ -58,8 +58,8 @@ GET /api/articles/mostPopular - returns top 10 articles with the most votes
 GET /api/articles/:id - Return an individual article by its ID
 GET /api/articles/:id/comments - Return all comments for a single article ID
 POST /api/articles/:id/comments - Add a new comment to the appropriate article ID
-PUT /api/articles/:id - Increment/decrement votes on an article
-PUT /api/comments/:id - Increment/decrement votes on a comment
+PUT /api/articles/:id - Increment/decrement votes on an article based on a vote=up or vote=down query
+PUT /api/comments/:id - Increment/decrement votes on a comment based on a vote=up or vote=down query
 DELETE /api/comments/:id - Delete a comment
 GET /api/users/:username - Return a user profile along with their articles and comments
 
