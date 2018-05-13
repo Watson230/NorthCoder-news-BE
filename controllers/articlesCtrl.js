@@ -48,7 +48,7 @@ function fetchArticleComments(req, res, next) {
   return commentModel.find({ 'belongs_to': articleId })
 
     .then(comments => {
-      if (comments.length === 0) return res.status(200).send(` article ${articleId} does not have any comments`);
+     
       return res.status(200).send(comments);
     })
     .catch(err => {
@@ -76,7 +76,7 @@ function fetchUserArticles(req, res, next) {
     .catch(err => {
    
       if (err.name === 'CastError') {    
-        return next({ status: 404, msg: `user ${user} artlices could not be found ` });
+        return next({ status: 404, msg: `user ${user} articles could not be found ` });
       }
       return next(err);
 
@@ -90,15 +90,16 @@ function patchVotes(req, res, next) {
 
   const articleId = req.params.id;
   const vote = req.query.vote;
-  let voteInc = 0;
+  let voteInc;
 
   if (vote === 'up') voteInc = 1;
-  if (vote === 'down') voteInc = -1;
+  else if (vote === 'down') voteInc = -1;
+  else voteInc = 0;
 
   articleModel.findOneAndUpdate({ '_id': articleId }, { $inc: { votes: voteInc } }, { 'new': true })
+  
     .then(Article => res.status(200).send(Article))
     .catch(err => {
-   
       if (err.name === 'CastError') return next({ status: 404, msg: `article  ${articleId} does not exist` });
       return next(err);
 
@@ -109,10 +110,10 @@ function addComment(req, res, next) {
 
   let articleId = req.params.id;
 
-  commentModel({
+  const comment = commentModel({
     body: req.body.comment,
     belongs_to: articleId
-  }).save().then(newComment => { res.status(200).send(newComment);})
+  }).save().then(newComment => { res.status(201).send(newComment);})
     .catch(err => {
     
       return next(err);
