@@ -51,13 +51,11 @@ function fetchArticleComments(req, res, next) {
      
       return res.status(200).send(comments);
     })
-    .catch(err => {
-   
+    .catch(err => {  
       if (err.name === 'CastError') {    
         return next({ status: 404, msg: `comments for  ${articleId} could not be found ` });
       }
       else return next(err);
-
     });
 
 
@@ -98,7 +96,7 @@ function patchVotes(req, res, next) {
 
   articleModel.findOneAndUpdate({ '_id': articleId }, { $inc: { votes: voteInc } }, { 'new': true })
   
-    .then(Article => res.status(200).send(Article))
+    .then(Article => res.status(204).send(Article))
     .catch(err => {
       if (err.name === 'CastError') return next({ status: 404, msg: `article  ${articleId} does not exist` });
       return next(err);
