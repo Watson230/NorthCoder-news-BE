@@ -26,9 +26,6 @@ describe('API', () => {
     mongoose.disconnect();
   });
 
-
-
-
   describe('Routes', function () {
 
     describe('GET /users', function () {
