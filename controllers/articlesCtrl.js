@@ -56,7 +56,6 @@ function fetchArticleComments(req, res, next) {
       else return next(err);
     });
 
-
 }
 
 function fetchUserArticles(req, res, next) {
