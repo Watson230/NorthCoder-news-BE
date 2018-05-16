@@ -17,13 +17,10 @@ function fetchUser(req, res, next) {
   let user = req.params.username;
   userModel.find({ 'username': `${user}` })
     .then(user => {
-      if (user.length === 0) return next({ status: 404, msg: `No users with username ${user}` });
+      if (user.length === 0) return next({ status: 404, msg: 'user does not exist'});
       return res.status(200).send(user);
     })
     .catch(err => {
-      if (err.name === 'CastError') {    
-        return next({ status: 404, msg: `${user} doest not exist`});
-      }
       return next(err);
     });
 
