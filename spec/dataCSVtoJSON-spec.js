@@ -2,8 +2,6 @@ const { expect } = require('chai');
 const csvtoJSON = require('../dataCSVtoJSON').CVStoJSON;
 
 
-
-
 describe('dataCSVtoJSON TEST', function () {
   const options = {
     delimiter: ',', // optional
@@ -11,7 +9,6 @@ describe('dataCSVtoJSON TEST', function () {
   };
 
   it('should take data in CSV format and convert it to JSON', function () {
-
 
     let expected = (csvtoJSON('./spec/test.csv', options));
     let result = [{

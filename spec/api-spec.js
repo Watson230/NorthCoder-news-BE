@@ -40,7 +40,6 @@ describe('API', () => {
           .then((res) => {
             expect(res.body.length).to.equal(1);
           });
-
       });
 
       it(' /users/:username responds with user with specified username', () => {
@@ -53,15 +52,16 @@ describe('API', () => {
             expect(res.body[0]).to.be.an('object');
             expect(res.body[0].username).to.equal(userID);
           });
-
-
       });
 
       it(' /users/:username responds with 404 if specified username does not exist', () => {
         let userID = 'dave';
         return request(app)
           .get(`/api/users/${userID}`)
-          .expect(404);
+          .expect(404)
+          .then((res) => {
+            expect(res.error.text).to.equal('user does not exist');
+          });
 
       });
 
@@ -75,8 +75,8 @@ describe('API', () => {
             expect(res.body[0].created_by).to.equal(userID);
             expect(res.body[0].body).to.be.an('string');
           });
-
       });
+
       it('/users/:username/articles responds with specified users articles', () => {
         let userID = usefulData.user.username;
 
@@ -86,9 +86,7 @@ describe('API', () => {
           .then((res) => {
             expect(res.body[0].created_by).to.equal(userID);
           });
-
       });
-
     });
 
     describe('GET /topics', function () {
@@ -124,7 +122,10 @@ describe('API', () => {
         let topic = 'tennis';
         return request(app)
           .get(`/api/topics/${topic}/articles`)
-          .expect(404);
+          .expect(404)
+          .then((res) => {
+            expect(res.error.text).to.equal(`There are no articles for topic:${topic}` );
+          });
 
       });
     });
@@ -146,12 +147,11 @@ describe('API', () => {
         let commentId = '1234';
         return request(app)
           .put(`/api/comments/${commentId}?vote=up`)
-          .expect(404);
-
-
+          .expect(404)
+          .then((res) => {
+            expect(res.error.text).to.equal(`comment ${commentId} does not exist`);
+          });
       });
-
-
     });
 
     describe(' GET /articles', function () {
@@ -164,9 +164,7 @@ describe('API', () => {
             expect(res.body).to.be.an('array');
             expect(res.body.length).to.equal(2);
             expect(res.body[0]).to.be.an('object');
-
           });
-
       });
 
       it('/articles/:id should respond with artices with specified ID', () => {
@@ -179,7 +177,6 @@ describe('API', () => {
             expect(res.body.length).to.equal(1);
             expect(res.body[0].belongs_to).to.equal(usefulData.articles[0].belongs_to);
           });
-
       });
 
       it(' /articles/:id should respond with  404 if articles with specified ID does not exist', () => {
@@ -188,8 +185,10 @@ describe('API', () => {
 
         return request(app)
           .get(`/api/articles/${articleId}`)
-          .expect(404);
-
+          .expect(404)
+          .then((res) => {
+            expect(res.error.text).to.equal(`article ${articleId} does not exist`);
+          });
       });
 
 
@@ -202,15 +201,17 @@ describe('API', () => {
           .then((res) => {
             expect(res.body.length).to.equal(2);
           });
-
       });
 
-      it('/articles/:articleID/comments should respond with 404  array of comments of a specified article is of length 0', () => {
+      it('/articles/:articleID/comments should respond with 404 if array of comments of a specified article is of length 0', () => {
         let articleId = '';
 
         return request(app)
           .get(`/api/articles/${articleId}/comments`)
-          .expect(404);
+          .expect(404)
+          .then((res) => {
+            expect(res.error.text).to.equal( 'article comments does not exist');
+          });       
       });
     });
 
@@ -224,7 +225,6 @@ describe('API', () => {
           .then((res) => {
             expect(res.body.votes).to.equal(1);
           });
-
       });
 
       it('should give 404 article with specified ID does not exist', () => {
@@ -235,9 +235,7 @@ describe('API', () => {
           .then((res) => {
             expect(res.error.text).to.equal(`article  ${articleId} does not exist`);
           });
-
       });
-
     });
 
     describe(' POST /articles/:id/comments', function () {
@@ -256,14 +254,27 @@ describe('API', () => {
           });
       });
       
-      it.only('should give a 404 if ID does not exist ', () => {
+      it('should give a 404 if ID does not exist ', () => {
         let articleId = 'wefef';
         return request(app)
           .post(`/api/articles/${articleId}/comments`)
           .send({
             comment: 'hello'
           })
-          .expect(200);
+          .expect(404)
+          .then((res) => {
+            expect(res.error.text).to.equal(`Unable to post comment, article ${articleId} does not exist`);
+          });
+      });
+
+      it('should give a 400 if comment does not have a body ', () => {
+        let articleId = usefulData.articles[1]._id;
+        return request(app)
+          .post(`/api/articles/${articleId}/comments`)
+          .expect(400)
+          .then(res =>{
+            expect(res.error.text).to.equal('Path `body` is required. no comment string sent in request body');
+          });    
       });
 
     });
