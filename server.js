@@ -35,7 +35,8 @@ app.get('/', (req, res)=>{
 app.use('/api', apirouter);
 
 app.use((err, req, res, next) => {
-  if (err.status === 404) return res.status(404).send(err);
+  if (err.status === 400) return res.status(400).send(`${err.msg}`);
+  if (err.status === 404) return res.status(404).send(`${err.msg}`);
   next();
 });
 
