@@ -26,7 +26,7 @@ function fetchMostPopularArticles(req, res, next) {
 
 function fetchArticle(req, res, next) {
 
-  let articleId = req.params.id;
+  const articleId = req.params.id;
 
   return articleModel.find({ '_id': articleId })
     .then(article => {
@@ -43,12 +43,10 @@ function fetchArticle(req, res, next) {
 
 function fetchArticleComments(req, res, next) {
 
-  let articleId = req.params.id;
+  const articleId = req.params.id;
 
   return commentModel.find({ 'belongs_to': articleId })
-
     .then(comments => {
-     
       return res.status(200).send(comments);
     })
     .catch(err => {  
@@ -63,25 +61,18 @@ function fetchArticleComments(req, res, next) {
 
 function fetchUserArticles(req, res, next) {
 
-  let user = req.params.id;
-
+  const user = req.params.id;
 
   articleModel.find({ 'created_by': `${user}` })
-
     .then(userArticles => {
       if (userArticles.length === 0) return res.status(200).send({msg: `${user} has no articles`});
       return res.status(200).send(userArticles);})
     .catch(err => {
-   
       if (err.name === 'CastError') {    
         return next({ status: 404, msg: `user ${user} articles could not be found ` });
       }
       return next(err);
-
     });
-
-
-
 }
 
 function patchVotes(req, res, next) {
@@ -95,32 +86,34 @@ function patchVotes(req, res, next) {
   else voteInc = 0;
 
   articleModel.findOneAndUpdate({ '_id': articleId }, { $inc: { votes: voteInc } }, { 'new': true })
-  
-    .then(Article => res.status(204).send(Article))
+    .then(Article => {
+      return res.status(200).send(Article);
+    })
     .catch(err => {
       if (err.name === 'CastError') return next({ status: 404, msg: `article  ${articleId} does not exist` });
       return next(err);
-
     });
 }
 
 function addComment(req, res, next) {
 
-  let articleId = req.params.id;
-
-  const comment = commentModel({
-    body: req.body.comment,
-    belongs_to: articleId
-  }).save().then(newComment => { res.status(201).send(newComment);})
+  const articleId = req.params.id;
+ 
+  articleModel.findOne({_id: articleId}).lean()
+    .then(article => {
+      return commentModel({
+        body: req.body.comment,
+        belongs_to: article._id
+      }).save();
+    })
+    .then(newComment => { 
+      return res.status(201).send(newComment);})
     .catch(err => {
-    
+      if (err.name === 'ValidationError') return next({status: 400, msg: `${err.errors.body.message} no comment string sent in request body`});
+      if (err.name === 'CastError') return next({ status: 404, msg: `Unable to post comment, article ${articleId} does not exist` });
       return next(err);
-
     });
 }
-
-
-
 
 
 module.exports = { fetchArticles, fetchArticleComments, fetchUserArticles, fetchArticle, patchVotes, addComment, fetchMostPopularArticles };

@@ -5,14 +5,12 @@ const articleModels = require('../models/articles');
 
 
 
-function fetchTopics(req, res) {
+function fetchTopics(req, res, next) {
 
   return topicModels.find({})
     .then(topics => res.status(200).send(topics))
     .catch(err => {
-      
-      return res.status(500).send({ error: err });
-
+      return next(err);
     });
 
 }

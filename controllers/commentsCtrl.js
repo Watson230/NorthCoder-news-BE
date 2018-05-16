@@ -17,7 +17,7 @@ function patchVotes(req, res, next) {
     .catch(err => {
       
       if(err.name === 'CastError') return next({ status: 404, msg: `comment ${commentId} does not exist` });
-      return res.status(500).send({ error: err });
+      return next(err);
     });
 }
 
@@ -32,7 +32,7 @@ function deleteComment(req, res, next) {
     .catch(err => {
       
       if(err.name === 'CastError') return next({ status: 404, msg: `comment ${commentId} does not exist` });
-      return res.status(500).send({ error: err });
+      return next(err);
 
     });
 }
