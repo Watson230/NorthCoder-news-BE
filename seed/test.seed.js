@@ -22,8 +22,8 @@ function saveTopics() {
 
 function saveArticles() {
   const articles = [
-    { title: 'Cats are great', body: 'something', belongs_to: 'cats' },
-    { title: 'Football is fun', body: 'something', belongs_to: 'football' }
+    { title: 'Cats are great', body: 'something', belongs_to: 'cats' , votes:0},
+    { title: 'Football is fun', body: 'something', belongs_to: 'football',votes:0 }
   ].map(a => new Articles(a).save());
   return Promise.all(articles);
 }
