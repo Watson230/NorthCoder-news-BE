@@ -24,15 +24,10 @@ const ArticleSchema = new Schema({
     lowercase: true,
     default: 'northcoder'
   },
-
   created_at: {
     type: String,
     default: new Date().getTime()
   },
-  comments: {
-    type: Array,
-    default: []
-  }
 
 });
 
