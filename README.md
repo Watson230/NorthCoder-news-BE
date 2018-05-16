@@ -25,8 +25,7 @@ These instructions will get you a copy of the project up and running on your loc
     "body-parser": "^1.15.2",
     "express": "^4.16.3",
     "dotenv": "^5.0.1",
-
-    
+       
 ### Installing
 
 Open your terminal
@@ -35,15 +34,21 @@ Clone this repository (https://github.com/Watson230/BE-PT-northcoders-news)
 
 Install dependencies ( npm i )
 
-run npm i (insert dependency name here)
+Start the MongoDB process by enter 'mongod' into your terminal
 
-Start the MongoDB process
-mongod
+## Seeding
+To Seed your local development database enter npm run seed:dev in your terminal
 
-Seed the dev data
-npm run seed:dev
+## Running App
 
-run npm start for production ENV or npm:dev for development ENV(with nodemon) to run locally
+To run the app locally enter npm:dev for development environment using nodemon and your local database.
+
+To run the app in the its production Environment with a hosted database, enter run npm start.
+
+
+##Deployed 
+Link: https://damp-everglades-92072.herokuapp.com 
+
 
 #Testing
 Each api endpoint was tested, with both successful and unsuccessful requests (where applicable)
