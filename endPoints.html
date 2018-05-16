@@ -12,19 +12,21 @@
  </head>
  <body>
 
-<h1>NorthCoder News Api</h1>
-   /api
+<h1>NorthCoder News Api Documentation</h1>
+
+
+   
        <h1>ARTICLES </h1>
 
         <h3>Get</h3>
 
-        <h4>/articles</h4>
+        <h4>api/articles</h4>
     <p>array of all articles</p>
 
-       <h4>/articles/mostpopular</h4> 
+       <h4>api/articles/mostpopular</h4> 
     gives array of the 10 most popular articles
 
-    <h4>/articles/:id</h4> 
+    <h4>api/articles/:id</h4> 
     gives an array back container a single article with a specified._id
 
     <h4>/articles/:id/comments</h4> 
@@ -32,12 +34,12 @@
 
    <h3>Post</h3>
     
-    <h4>/articles/:id/comments</h4> 
+    <h4>api/articles/:id/comments</h4> 
     post a new comment belonging to a article with a specified Id 
 
 
     <h3>Put</h3>
-    <h4> / articles /: id</h4> 
+    <h4> api/articles/:id</h4> 
     takes a query of vote = up or vote = down to increment / decrement the vote count of the article
 
     
@@ -45,11 +47,11 @@
 
     <h3>PUT</h3>
 
-    <h4>/comments /: id</h4> 
+    <h4>api/comments/:id</h4> 
     takes a query of vote = up or vote = down to increment / decrement the vote count of the comment
     
    <h3>DELETE</h3>
-    <h4>/ comments /: id</h4> 
+    <h4>api/comments/:id</h4> 
     Deletes comment with specified Id
 
    <h1>TOPICS</h1>
@@ -59,23 +61,23 @@
     <h4>/topics</h4> 
     responds with an array of all availible topics
 
-    <h4>/ topics / articles</h4> 
+    <h4>api/topics/articles</h4> 
     responds with an array of articles that belong to a specified topic
 
    <h1>USERS</h1>
 
     <h3>GET</h3>
 
-    <h4>/ users</h4> 
+    <h4>api/users</h4> 
     responds with an array of all availible users
 
-    <h4>/users/:username</h4> 
+    <h4>api/users/:username</h4> 
     responds with an array of single object with inthe information of a specified user
 
-    <h4>/users/:username/comments</h4> 
+    <h4>api/users/:username/comments</h4> 
     responds with an array of comemnts made by a specified user
 
-    <h4>/users/:username/articles</h4> 
+    <h4>/apiusers/:username/articles</h4> 
     responds with an array of articles made by specified user'
      
  </body>
