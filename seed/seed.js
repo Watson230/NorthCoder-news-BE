@@ -23,70 +23,50 @@ let topicsData = require('../dataCSVtoJSON').topicsJSON;
 
 const seedArticles = function () {
 
+  return articleData.map(article => {
+    article.belongs_to = article.topic,
+    article.created_by = chance.pickone(userData.map(user => { return user.username;}));
+    article.created_at = chance.date();
+    article.votes= Math.floor(Math.random() * 30) + 1 ;
 
-  return new Promise((resolve, reject) => {
-
-    resolve(articleData.map(article => {
-      article.belongs_to = article.topic,
-      article.created_by = chance.pickone(userData.map(user => { return user.username;}));
-      article.created_at = chance.date();
-      article.votes= Math.floor(Math.random() * 30) + 1 ;
-
-      return new models.Articles(article);
-
-  
-
-    }));
-    reject(null);
+    return new models.Articles(article);
   });
+    
+
 };
 
 const seedUsers = function () {
-  return new Promise((resolve, reject) => {
-
-
-    resolve(userData.map(user => {
-
-
-      return new models.Users(user);
-
-    }));
-    reject(null);
-
+  return  userData.map(user => {
+    return new models.Users(user);
   });
 };
 
 const seedTopics = function () {
-  return new Promise((resolve, reject) => {
-    resolve(topicsData.map(topic => {
-      return new models.Topics(topic);
-    }));
-    reject(null);
+  return topicsData.map(topic => {
+    return new models.Topics(topic);
   });
 };
 
 
 
-const seedComments = function (articleIdArray,num) {
 
-  return new Promise((resolve, reject) => {
+const seedComments = function (articleId,num) {
 
-    const commentsArray = Array(num).fill(null).map(comment => {
+  const commentsArray = Array(num).fill(null).map(comment => {
 
-      comment = {
-        body: chance.sentence(),
-      
-        votes: chance.integer({ min: 0, max: 10 }),
-        created_by: chance.pickone(usernamesArr),
-        belongs_to: chance.pickone(articleIdArray)
+    comment = {
+      body: chance.sentence(),
+      votes: chance.integer({ min: 0, max: 10 }),
+      created_by: chance.pickone(usernamesArr),
+      belongs_to: articleId
        
-      };
-      return new models.Comments(comment);
-    });
-    resolve(commentsArray);
-    reject(null);
+    };
+    return new models.Comments(comment);
   });
+
+  return commentsArray;
 };
+ 
 
 
 function seedDatabase() {
@@ -101,37 +81,20 @@ function seedDatabase() {
     })
 
     .then(() => {
-      seedArticles().then(articles => {articles.map((article) =>article.save());
-        return articles;
-      })
-        .then(articles =>{
-          return articles.map(doc => doc._id);
-        })
-        .then((articleIds)=>{
-          seedComments(articleIds,Math.round(Math.random() * 10))
-            .then(comments =>
-              comments.map(comment => comment.save()));
-        });
-    }).then(()=>{
-
-      seedTopics().then(topics => topics.map(topic => topic.save()));
-      seedUsers().then(users => users.map(user => user.save()));
-
-    })
-    .then(()=>{
-      
-      console.log(`${process.env.DB_URI} Seeded`);
-      process.exit();
+      seedArticles().map((article) =>{
         
+        article.save();
+        article.comments = seedComments(article._id,Math.round(Math.random() * 10)).map(comment => comment.save());
+ 
+      }); 
+      seedTopics().map(topic => topic.save());
+      seedUsers().map(user => user.save());
+    })
+    .then(()=>{    
+      console.log(`${process.env.DB_URI} Seeded`);
+      process.exit();       
     });
 
-
-      
-
-
-      
-    
-  
 
 }
 
