@@ -28,11 +28,8 @@ const seedArticles = function () {
     article.created_by = chance.pickone(userData.map(user => { return user.username;}));
     article.created_at = chance.date();
     article.votes= Math.floor(Math.random() * 30) + 1 ;
-
     return new models.Articles(article);
   });
-    
-
 };
 
 const seedUsers = function () {
@@ -48,29 +45,21 @@ const seedTopics = function () {
 };
 
 
-
-
 const seedComments = function (articleId,num) {
-
   const commentsArray = Array(num).fill(null).map(comment => {
-
     comment = {
       body: chance.sentence(),
       votes: chance.integer({ min: 0, max: 10 }),
       created_by: chance.pickone(usernamesArr),
-      belongs_to: articleId
-       
+      belongs_to: articleId     
     };
     return new models.Comments(comment);
   });
-
   return commentsArray;
 };
  
 
-
 function seedDatabase() {
- 
   return mongoose.connect(process.env.DB_URI, {useMongoClient: true },(err) => {
     if (err) console.log(err);
     else console.log('connection to ' + process.env.DB_URI + ' successful');
