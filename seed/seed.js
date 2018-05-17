@@ -84,7 +84,7 @@ function seedDatabase() {
       seedArticles().map((article) =>{
         
         article.save();
-        article.comments = seedComments(article._id,Math.round(Math.random() * 10)).map(comment => comment.save());
+        article.comments.push(seedComments(article._id,Math.round(Math.random() * 10)).map(comment => comment.save()));
  
       }); 
       seedTopics().map(topic => topic.save());
