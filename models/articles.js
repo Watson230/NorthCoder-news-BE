@@ -28,11 +28,6 @@ const ArticleSchema = new Schema({
     type: String,
     default: new Date().getTime()
   },
-  comments:{
-    type:Array,
-    default:[]
-  }
-
 });
 
 module.exports = mongoose.model('articles', ArticleSchema);

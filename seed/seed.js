@@ -75,17 +75,13 @@ function seedDatabase() {
     if (err) console.log(err);
     else console.log('connection to ' + process.env.DB_URI + ' successful');
   })
-
     .then(() => {
       mongoose.connection.db.dropDatabase();
     })
-
     .then(() => {
-      seedArticles().map((article) =>{
-        
+      seedArticles().map((article) =>{  
         article.save();
-        article.comments.push(seedComments(article._id,Math.round(Math.random() * 10)).map(comment => comment.save()));
- 
+        seedComments(article._id,Math.round(Math.random() * 10)).map(comment => comment.save());
       }); 
       seedTopics().map(topic => topic.save());
       seedUsers().map(user => user.save());
