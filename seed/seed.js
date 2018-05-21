@@ -10,15 +10,10 @@ let Chance = require('chance');
 let chance = new Chance();
 mongoose.Promise = global.Promise;
 
-let articleData = require('../dataCSVtoJSON').articlesJSON;
-let userData = require('../dataCSVtoJSON').userJSON;
+const articleData = require('../dataCSVtoJSON').articlesJSON;
+const userData = require('../dataCSVtoJSON').userJSON;
 const usernamesArr = userData.map(user => { return user.username ;});
-let topicsData = require('../dataCSVtoJSON').topicsJSON;
-
-
-
-// This should seed your development database using the CSV file data
-// Feel free to use the async library, or native Promises, to handle the asynchronicity of the seeding operations.
+const topicsData = require('../dataCSVtoJSON').topicsJSON;
 
 
 const seedArticles = function () {
@@ -33,17 +28,18 @@ const seedArticles = function () {
 };
 
 const seedUsers = function () {
-  return  userData.map(user => {
-    return new models.Users(user);
+  const users = userData.map(user => {
+    return new models.Users(user).save();
   });
+  return Promise.all(users);
 };
 
 const seedTopics = function () {
-  return topicsData.map(topic => {
-    return new models.Topics(topic);
+  const topics = topicsData.map(topic => {
+    return new models.Topics(topic).save();
   });
+  return Promise.all(topics);
 };
-
 
 const seedComments = function (articleId,num) {
   const commentsArray = Array(num).fill(null).map(comment => {
@@ -66,21 +62,18 @@ function seedDatabase() {
   })
     .then(() => {
       mongoose.connection.db.dropDatabase();
+      return seedUsers();
     })
     .then(() => {
       seedArticles().map((article) =>{  
-        article.save();
-        seedComments(article._id,Math.round(Math.random() * 10)).map(comment => comment.save());
-      }); 
-      seedTopics().map(topic => topic.save());
-      seedUsers().map(user => user.save());
+        article.save().then(()=>seedComments(article._id,Math.round(Math.random() * 10)).map(comment => comment.save())); 
+      });
+      return seedTopics();
     })
     .then(()=>{    
       console.log(`${process.env.DB_URI} Seeded`);
       process.exit();       
     });
-
-
 }
 
 seedDatabase(process.env.DB_URI);
