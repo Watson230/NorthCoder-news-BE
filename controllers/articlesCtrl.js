@@ -5,7 +5,6 @@ const commentModel = require('../models/comments');
 
 
 function fetchArticles(req, res, next) {
-
   return articleModel.find()
     .then(articles => res.status(200).send(articles))
     .catch(err => {
@@ -14,20 +13,16 @@ function fetchArticles(req, res, next) {
 }
 
 function fetchMostPopularArticles(req, res, next) {
- 
   return articleModel.find().sort({ 'votes': -1 }).limit(10)
     .then(articles => res.status(200).send(articles))
     .catch(err => {
-    
       return next(err);
-
     });
 }
 
 function fetchArticle(req, res, next) {
 
   const articleId = req.params.id;
-
   return articleModel.find({ '_id': articleId })
     .then(article => {
       return res.status(200).send(article);
@@ -44,7 +39,6 @@ function fetchArticle(req, res, next) {
 function fetchArticleComments(req, res, next) {
 
   const articleId = req.params.id;
-
   return commentModel.find({ 'belongs_to': articleId })
     .then(comments => {
       return res.status(200).send(comments);
@@ -61,7 +55,6 @@ function fetchArticleComments(req, res, next) {
 function fetchUserArticles(req, res, next) {
 
   const user = req.params.id;
-
   articleModel.find({ 'created_by': `${user}` })
     .then(userArticles => {
       if (userArticles.length === 0) return res.status(200).send({msg: `${user} has no articles`});
@@ -79,11 +72,9 @@ function patchVotes(req, res, next) {
   const articleId = req.params.id;
   const vote = req.query.vote;
   let voteInc;
-
   if (vote === 'up') voteInc = 1;
   else if (vote === 'down') voteInc = -1;
   else voteInc = 0;
-
   articleModel.findOneAndUpdate({ '_id': articleId }, { $inc: { votes: voteInc } }, { 'new': true })
     .then(Article => {
       return res.status(200).send(Article);
@@ -97,7 +88,6 @@ function patchVotes(req, res, next) {
 function addComment(req, res, next) {
 
   const articleId = req.params.id;
- 
   articleModel.findOne({_id: articleId}).lean()
     .then(article => {
       return commentModel({
